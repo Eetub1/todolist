@@ -6,7 +6,29 @@ import { Projects } from './projects.js';
 import { drawProjects, allTodos} from './handleUI.js';
 
 const projects = new Projects()
+const allTodosList = new Todos()
 
+const projectDialog = document.getElementById("addProjectDialog")
+const addProjectBtn = document.getElementById("addProject")
+addProjectBtn.addEventListener("click", () => projectDialog.showModal())
+
+const submitProjectBtn = document.getElementById("projectSubmitBtn")
+submitProjectBtn.addEventListener("click", (event) => createNewProject(event))
+
+const projectForm = document.forms.addProjectForm
+
+function createNewProject(event) {
+    event.preventDefault()
+    const name = projectForm.prName.value
+    if (name.trim() === "") return
+    const newProject = new Project(name)
+    projects.add(newProject)
+    drawProjects(projects)
+    projectDialog.close()
+    projectForm.reset()
+}
+
+//function adds example data to the page
 function testClasses() {
 
     //chatGPT generated example data
@@ -18,7 +40,6 @@ function testClasses() {
     const shower = new Todo("shower", "take a shower nerd", "right about now", "IMPORTANT")
     const doStuff = new Todo("stuff", "do stuff", "dunno", "?")
 
-    const allTodosList = new Todos()
     allTodosList.add(todo1);
     allTodosList.add(todo2);
     allTodosList.add(todo3);
@@ -36,30 +57,12 @@ function testClasses() {
     const hygiene = new Project("Hygiene")
     hygiene.addTodo(shower)
 
-    //const projects = new Projects()
     projects.add(stuff)
     projects.add(hygiene)
 
     drawProjects(projects)
-
 }
 testClasses()
 
-const addProjectBtn = document.getElementById("addProject")
-addProjectBtn.addEventListener("click", function(event) {
-    const form = document.forms.addProjectForm
-    const projectDialog = document.getElementById("addProjectDialog")
-    projectDialog.show()
-
-    const submitBtn = document.getElementById("projectSubmitBtn")
-    submitBtn.addEventListener("click", function(event) {
-        event.preventDefault()
-        const name = form.prName.value
-        const newProject = new Project(name)
-        projects.add(newProject)
-        drawProjects(projects)
-        projectDialog.close()
-    })
-})
 
 

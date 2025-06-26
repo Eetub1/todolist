@@ -1,4 +1,5 @@
 const todoCont = document.getElementById("todos")
+const todoDialog = document.getElementById("addTodoDialog")
 
 function drawProjects(projects) {
     const projectsCont = document.getElementById("projects")
@@ -16,6 +17,17 @@ function drawProjects(projects) {
 
 function drawProjectTodos(project) {
     todoCont.textContent = ""
+
+    const div = document.createElement("div")
+    const button = document.createElement("button")
+    button.addEventListener("click", () => todoDialog.showModal())
+    button.textContent = "Add new task"
+    const p = document.createElement("p")
+    p.textContent = `Project name: ${project.name}`
+    div.appendChild(p)
+    div.appendChild(button)
+    todoCont.appendChild(div)
+
     project.todos.forEach(todo => {
         const p = document.createElement("p")
         p.textContent = todo.title
@@ -32,6 +44,7 @@ function allTodos(todos) {
 }
 
 function showAllTodos(todos) {
+    todoCont.textContent = ""
     todos.todos.forEach(todo => {
         const p = document.createElement("p")
         p.textContent = todo.title
