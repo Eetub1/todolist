@@ -1,11 +1,10 @@
 class Todo {
     static id = 1
-    constructor(title, description, dueDate, priority, project_id=-1) {
+    constructor(title, description, dueDate, priority) {
         this.title = title
         this.description = description
         this.dueDate = dueDate
         this.priority = priority
-        this.project_id = project_id
         this.setTodo_id()
     }
 
@@ -19,7 +18,7 @@ class Todo {
     }
 
     sayInfo() {
-        console.log(`${this.title} ${this.description} ${this.dueDate} ${this.priority} ${this.project_id}`);
+        console.log(`${this.title} ${this.description} ${this.dueDate} ${this.priority}`);
     }
 }
 

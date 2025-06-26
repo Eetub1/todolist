@@ -1,6 +1,7 @@
 class Project {
     static project_id = 1
     constructor(name) {
+        this.todos = []
         this.name = name
         this.setProject_id()
     }
@@ -19,7 +20,7 @@ class Project {
     }
 
     addTodo(todo) {
-        todo.project_id = this.project_id
+        this.todos.push(todo)
     }
 }
 
