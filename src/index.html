@@ -6,7 +6,22 @@
   <title>Todo-list</title>
 </head>
 <body>
-  <div id="projects">Projektit</div>
-  <div id="todos">Todot</div>
+  <div id="leftsideBar">
+    <div id="allTodos"></div>
+    <div id="projects">Projects: </div>
+    <div>
+      <button id="addProject">Add new project</button>
+    </div>
+  </div>
+  <div id="todos"></div>
+
+  <dialog id="addProjectDialog">
+    <form action="#" id="addProjectForm">
+      <div class="addProjectFormRow"><label>name<input name="prName" type="text"></label></div>
+
+      <button type="submit" id="projectSubmitBtn">submit</button>
+    </form>
+  </dialog>
+
 </body>
 </html>

@@ -1,60 +1,65 @@
 import './style.css';
 import { Todo } from './todo.js'
+import { Todos } from './todos.js';
 import { Project } from './project.js'
 import { Projects } from './projects.js';
-import { drawProjects } from './handleUI.js';
+import { drawProjects, allTodos} from './handleUI.js';
+
+const projects = new Projects()
 
 function testClasses() {
-    //todo 1
+
+    //chatGPT generated example data
+    const todo1 = new Todo("Buy groceries", "Milk, eggs, bread", "2025-06-30", "High");
+    const todo2 = new Todo("Call mom", "Check in and chat", "2025-07-01", "Medium");
+    const todo3 = new Todo("Workout", "Leg day at the gym", "2025-06-27", "High");
+    const todo4 = new Todo("Read book", "Finish reading 'Clean Code'", "2025-07-05", "Low");
+    const todo5 = new Todo("Pay bills", "Electricity and water", "2025-06-28", "High");
     const shower = new Todo("shower", "take a shower nerd", "right about now", "IMPORTANT")
-    shower.sayInfo()
-    shower.getTodo_id()
-
-    console.log("");
-
-    //todo 2
     const doStuff = new Todo("stuff", "do stuff", "dunno", "?")
-    doStuff.sayInfo()
-    doStuff.getTodo_id()
 
-    console.log("");
+    const allTodosList = new Todos()
+    allTodosList.add(todo1);
+    allTodosList.add(todo2);
+    allTodosList.add(todo3);
+    allTodosList.add(todo4);
+    allTodosList.add(todo5);
+    allTodosList.add(shower);
+    allTodosList.add(doStuff);
 
-    //project 1
+    allTodos(allTodosList)
+
     const stuff = new Project("Stuff!")
-    stuff.projectInfo()
-    stuff.getProject_id()
-
-    console.log("");
-
-    //adding todo 1 to project 1
     stuff.addTodo(shower)
-    shower.sayInfo()
-    //adding todo 2 to project 1
     stuff.addTodo(doStuff)
-    doStuff.sayInfo()
 
-    console.log("");
-
-    // project 2
     const hygiene = new Project("Hygiene")
-    hygiene.projectInfo()
-    hygiene.getProject_id()
-
-    //adding todo 2 to project 2
     hygiene.addTodo(shower)
-    shower.sayInfo()
 
-    console.log("")
-
-    //adding project to projects list
-    const projects = new Projects()
+    //const projects = new Projects()
     projects.add(stuff)
-    projects.show()
+    projects.add(hygiene)
 
     drawProjects(projects)
 
 }
-
 testClasses()
+
+const addProjectBtn = document.getElementById("addProject")
+addProjectBtn.addEventListener("click", function(event) {
+    const form = document.forms.addProjectForm
+    const projectDialog = document.getElementById("addProjectDialog")
+    projectDialog.show()
+
+    const submitBtn = document.getElementById("projectSubmitBtn")
+    submitBtn.addEventListener("click", function(event) {
+        event.preventDefault()
+        const name = form.prName.value
+        const newProject = new Project(name)
+        projects.add(newProject)
+        drawProjects(projects)
+        projectDialog.close()
+    })
+})
 
 
