@@ -5,7 +5,7 @@ function drawProjects(projects) {
     const projectsCont = document.getElementById("projects")
     projectsCont.textContent = ""
 
-    //projects.projects is a list containing all projects, a bit confusing
+    //projects.projects is a list containing all projects, confusing naming
     projects.projects.forEach(project => {
         const p = document.createElement("p")
         p.id = project.project_id
@@ -23,6 +23,8 @@ function drawProjectTodos(project) {
     button.addEventListener("click", () => todoDialog.showModal())
     button.textContent = "Add new task"
     const p = document.createElement("p")
+    p.id = "projectName"
+    p.setAttribute("project", project.name)
     p.textContent = `Project name: ${project.name}`
     div.appendChild(p)
     div.appendChild(button)

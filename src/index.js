@@ -8,13 +8,14 @@ import { drawProjects, allTodos} from './handleUI.js';
 const projects = new Projects()
 const allTodosList = new Todos()
 
+//===================================
+
+//code regarding adding a new project
 const projectDialog = document.getElementById("addProjectDialog")
 const addProjectBtn = document.getElementById("addProject")
 addProjectBtn.addEventListener("click", () => projectDialog.showModal())
-
 const submitProjectBtn = document.getElementById("projectSubmitBtn")
 submitProjectBtn.addEventListener("click", (event) => createNewProject(event))
-
 const projectForm = document.forms.addProjectForm
 
 function createNewProject(event) {
@@ -28,6 +29,50 @@ function createNewProject(event) {
     projectForm.reset()
 }
 
+//===============================
+
+//code for adding new todos
+const todoDialog = document.getElementById("addTodoDialog")
+
+const todoSubmitBtn = document.getElementById("todoSubmitBtn")
+todoSubmitBtn.addEventListener("click", (event) => addTodo(event))
+const todoForm = document.forms.addTodoForm
+
+function addTodo(event) {
+    event.preventDefault()
+    const title = todoForm.title.value
+    const description = todoForm.description.value
+    const dueDate = todoForm.dueDate.value
+
+    let priority
+    const radioButtons = document.querySelectorAll(".todoRadioBtn")
+    radioButtons.forEach(button => {
+        if (button.checked) priority = button.value;
+    })
+
+    //check if any field is empty
+    if (title.trim() === "" || description.trim() === "" || dueDate.trim() === "") return
+
+    console.log(title, description, dueDate, priority);
+
+    const newTodo = new Todo(title, description, dueDate, priority)
+    allTodosList.add(newTodo)
+
+    //saving the clicked projects name so we can add the todo to it
+    const project = document.getElementById("projectName")
+    const projectName = project.getAttribute("project")
+
+    //finding the right project object
+    projects.projects.forEach(project => {
+        if (project.name === projectName) {
+            project.addTodo(newTodo)
+        }
+    })
+
+    todoDialog.close()
+    todoForm.reset()
+}
+
 //function adds example data to the page
 function testClasses() {
 
@@ -37,6 +82,7 @@ function testClasses() {
     const todo3 = new Todo("Workout", "Leg day at the gym", "2025-06-27", "High");
     const todo4 = new Todo("Read book", "Finish reading 'Clean Code'", "2025-07-05", "Low");
     const todo5 = new Todo("Pay bills", "Electricity and water", "2025-06-28", "High");
+
     const shower = new Todo("shower", "take a shower nerd", "right about now", "IMPORTANT")
     const doStuff = new Todo("stuff", "do stuff", "dunno", "?")
 

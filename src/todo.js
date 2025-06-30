@@ -14,7 +14,7 @@ class Todo {
     }
 
     getTodo_id() {
-        console.log(this.todo_id);
+        return this.todo_id
     }
 
     sayInfo() {

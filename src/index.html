@@ -24,10 +24,16 @@
 
   <dialog id="addTodoDialog">
     <form action="#" id="addTodoForm">
-      <div class="addTodoFormRow"><label><input type="text"></label></div>
-      <div class="addTodoFormRow"><label><input type="text"></label></div>
-      <div class="addTodoFormRow"><label><input type="text"></label></div>
-      <div class="addTodoFormRow"><label><input type="text"></label></div>
+      <div class="addTodoFormRow"><label>Title: <input name="title" type="text"></label></div>
+      <div class="addTodoFormRow"><label>Description: <input name="description" type="text"></label></div>
+      <div class="addTodoFormRow"><label>dueDate<input name="dueDate" type="text"></label></div>
+
+      <div class="addTodoFormRow">
+        <p>Priority: </p>
+        <label>Low<input class="todoRadioBtn" value="low" name="priority" type="radio" checked></label>
+        <label>Medium<input class="todoRadioBtn" value="medium" name="priority" type="radio"></label>
+        <label>High<input class="todoRadioBtn" value="high" name="priority" type="radio"></label>
+      </div>
       <button id="todoSubmitBtn">submit</button>
     </form>
   </dialog>
