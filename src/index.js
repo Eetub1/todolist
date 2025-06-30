@@ -3,14 +3,14 @@ import { Todo } from './todo.js'
 import { Todos } from './todos.js';
 import { Project } from './project.js'
 import { Projects } from './projects.js';
-import { drawProjects, allTodos} from './handleUI.js';
+import { drawProjects, allTodos, drawProjectTodos} from './handleUI.js';
 
 const projects = new Projects()
 const allTodosList = new Todos()
 
-//===================================
+//==================================================================================
 
-//code regarding adding a new project
+//code for adding a new project
 const projectDialog = document.getElementById("addProjectDialog")
 const addProjectBtn = document.getElementById("addProject")
 addProjectBtn.addEventListener("click", () => projectDialog.showModal())
@@ -29,16 +29,17 @@ function createNewProject(event) {
     projectForm.reset()
 }
 
-//===============================
+//==================================================================================
 
 //code for adding new todos
 const todoDialog = document.getElementById("addTodoDialog")
 
 const todoSubmitBtn = document.getElementById("todoSubmitBtn")
-todoSubmitBtn.addEventListener("click", (event) => addTodo(event))
+todoSubmitBtn.addEventListener("click", (event) => addTodoToProjectOrOnlyToAllTodos(event))
 const todoForm = document.forms.addTodoForm
 
-function addTodo(event) {
+function addTodoToProjectOrOnlyToAllTodos(event) {
+
     event.preventDefault()
     const title = todoForm.title.value
     const description = todoForm.description.value
@@ -66,12 +67,22 @@ function addTodo(event) {
     projects.projects.forEach(project => {
         if (project.name === projectName) {
             project.addTodo(newTodo)
+            drawProjectTodos(project)
         }
     })
-
     todoDialog.close()
     todoForm.reset()
 }
+
+//adding a new todo only to all todos, not into a specific project
+const addToAllTodosBtn = document.getElementById("addToAllTodos")
+addToAllTodosBtn.addEventListener("click", addToAllTodos)
+
+function addToAllTodos() {
+    todoDialog.showModal()
+}
+
+//==================================================================================
 
 //function adds example data to the page
 function testClasses() {

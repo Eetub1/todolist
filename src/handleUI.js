@@ -1,5 +1,6 @@
 const todoCont = document.getElementById("todos")
 const todoDialog = document.getElementById("addTodoDialog")
+const allTodosBtnCont = document.getElementById("allTodos")
 
 function drawProjects(projects) {
     const projectsCont = document.getElementById("projects")
@@ -38,7 +39,6 @@ function drawProjectTodos(project) {
 }
 
 function allTodos(todos) {
-    const allTodosBtnCont = document.getElementById("allTodos")
     const p = document.createElement("p")
     p.textContent = "All todos"
     p.addEventListener("click", () => showAllTodos(todos))
@@ -54,4 +54,4 @@ function showAllTodos(todos) {
     })
 }
 
-export {drawProjects, allTodos}
+export {drawProjects, allTodos, drawProjectTodos}
