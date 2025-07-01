@@ -7,6 +7,7 @@ import { drawProjects, allTodos, drawProjectTodos} from './handleUI.js';
 
 const projects = new Projects()
 const allTodosList = new Todos()
+let addOnlyToAllTodos = false
 
 //==================================================================================
 
@@ -35,11 +36,10 @@ function createNewProject(event) {
 const todoDialog = document.getElementById("addTodoDialog")
 
 const todoSubmitBtn = document.getElementById("todoSubmitBtn")
-todoSubmitBtn.addEventListener("click", (event) => addTodoToProjectOrOnlyToAllTodos(event))
+todoSubmitBtn.addEventListener("click", (event) => addTodo(event))
 const todoForm = document.forms.addTodoForm
 
-function addTodoToProjectOrOnlyToAllTodos(event) {
-
+function addTodo(event) {
     event.preventDefault()
     const title = todoForm.title.value
     const description = todoForm.description.value
@@ -59,26 +59,36 @@ function addTodoToProjectOrOnlyToAllTodos(event) {
     const newTodo = new Todo(title, description, dueDate, priority)
     allTodosList.add(newTodo)
 
-    //saving the clicked projects name so we can add the todo to it
-    const project = document.getElementById("projectName")
-    const projectName = project.getAttribute("project")
+    //if this variable is true then skip this block of code
+    //and only add the todo to the all todos page, not also
+    //to a specific project
+    if (!addOnlyToAllTodos) {
+        //saving the clicked projects name so we can add the todo to
+        //a specific project
+        const project = document.getElementById("projectName")
+        const projectName = project.getAttribute("project")
 
-    //finding the right project object
-    projects.projects.forEach(project => {
-        if (project.name === projectName) {
-            project.addTodo(newTodo)
-            drawProjectTodos(project)
-        }
-    })
+        //finding the right project object
+        projects.projects.forEach(project => {
+            if (project.name === projectName) {
+                project.addTodo(newTodo)
+                drawProjectTodos(project)
+            }
+        })
+    }
     todoDialog.close()
     todoForm.reset()
+    addOnlyToAllTodos = false
 }
 
 //adding a new todo only to all todos, not into a specific project
 const addToAllTodosBtn = document.getElementById("addToAllTodos")
 addToAllTodosBtn.addEventListener("click", addToAllTodos)
 
+//when Add todo button is pressed, it sets the variable true, so
+//that the todo only goes to the all todos page
 function addToAllTodos() {
+    addOnlyToAllTodos = true
     todoDialog.showModal()
 }
 
