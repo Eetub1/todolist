@@ -1,10 +1,8 @@
 import { showTodoInfo } from "./index.js"
+import {todoDialog, saveChangesBtn, todoSubmitBtn} from "./index.js"
 
 const todoCont = document.getElementById("todos")
-const todoDialog = document.getElementById("addTodoDialog")
 const allTodosBtnCont = document.getElementById("allTodos")
-const saveChangesBtn = document.getElementById("todoSaveChanges")
-const todoSubmitBtn = document.getElementById("todoSubmitBtn")
 
 /**
  * Draws all project's names on the left side of the screen

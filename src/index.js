@@ -84,7 +84,7 @@ function addTodo(event) {
     //check if any field is empty
     if (title.trim() === "" || description.trim() === "" || dueDate.trim() === "") return
 
-    console.log(title, description, dueDate, priority);
+    //console.log(title, description, dueDate, priority);
 
     const newTodo = new Todo(title, description, dueDate, priority)
     allTodosList.add(newTodo)
@@ -95,6 +95,8 @@ function addTodo(event) {
     if (!addOnlyToAllTodos) {
         findCurrentProjectInfo()
         addToCurrentProject(newTodo)
+    } else {
+        drawAllTodos(allTodosList)
     }
     todoDialog.close()
     todoForm.reset()
@@ -165,7 +167,6 @@ function applyChanges(event) {
         drawAllTodos(allTodosList)
     } else {
         const projectObj = findProjectObject()
-        console.log(projectObj);
         drawProjectTodos(projectObj)
     }
 }
@@ -207,4 +208,5 @@ function testClasses() {
 testClasses()
 
 export {showTodoInfo}
+export {todoDialog, saveChangesBtn, todoSubmitBtn}
 
