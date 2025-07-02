@@ -35,9 +35,13 @@ function createNewProject(event) {
 //code for adding new todos
 const todoDialog = document.getElementById("addTodoDialog")
 
+const saveChangesBtn = document.getElementById("todoSaveChanges")
+saveChangesBtn.addEventListener("click", (event) => applyChanges(event))
+
 const todoSubmitBtn = document.getElementById("todoSubmitBtn")
 todoSubmitBtn.addEventListener("click", (event) => addTodo(event))
 const todoForm = document.forms.addTodoForm
+const radioButtons = document.querySelectorAll(".todoRadioBtn")
 
 function addTodo(event) {
     event.preventDefault()
@@ -46,7 +50,6 @@ function addTodo(event) {
     const dueDate = todoForm.dueDate.value
 
     let priority
-    const radioButtons = document.querySelectorAll(".todoRadioBtn")
     radioButtons.forEach(button => {
         if (button.checked) priority = button.value;
     })
@@ -90,6 +93,52 @@ addToAllTodosBtn.addEventListener("click", addToAllTodos)
 function addToAllTodos() {
     addOnlyToAllTodos = true
     todoDialog.showModal()
+    saveChangesBtn.style.display = "none"
+    todoSubmitBtn.style.display = "block"
+}
+
+//==================================================================================
+let clickedTodo
+
+function showTodoInfo(event) {
+    event.preventDefault()
+    todoDialog.showModal()
+    saveChangesBtn.style.display = "block"
+    todoSubmitBtn.style.display = "none"
+    //console.log(event.target);
+
+    
+    for (const todo of allTodosList.todos) {
+        if (todo.title === event.target.id) {
+            clickedTodo = todo
+        }
+    }
+
+    todoForm.title.value = clickedTodo.title
+    todoForm.description.value = clickedTodo.description
+    todoForm.dueDate.value = clickedTodo.dueDate
+
+    const todoPriority = clickedTodo.priority
+    radioButtons.forEach(button => {
+        if (button.value === todoPriority) button.checked = true
+    })
+}
+
+function applyChanges(event) {
+    event.preventDefault()
+
+    clickedTodo.title = todoForm.title.value
+    clickedTodo.description = todoForm.description.value
+    clickedTodo.dueDate = todoForm.dueDate.value
+
+    clickedTodo.priority = ""
+    radioButtons.forEach(button => {
+        if (button.checked) clickedTodo.priority = button.value;
+    })
+
+    todoDialog.close()
+    todoForm.reset()
+    
 }
 
 //==================================================================================
@@ -98,14 +147,13 @@ function addToAllTodos() {
 function testClasses() {
 
     //chatGPT generated example data
-    const todo1 = new Todo("Buy groceries", "Milk, eggs, bread", "2025-06-30", "High");
-    const todo2 = new Todo("Call mom", "Check in and chat", "2025-07-01", "Medium");
-    const todo3 = new Todo("Workout", "Leg day at the gym", "2025-06-27", "High");
-    const todo4 = new Todo("Read book", "Finish reading 'Clean Code'", "2025-07-05", "Low");
-    const todo5 = new Todo("Pay bills", "Electricity and water", "2025-06-28", "High");
+    const todo1 = new Todo("Buy groceries", "Milk, eggs, bread", "2025-06-30", "high");
+    const todo2 = new Todo("Call mom", "Check in and chat", "2025-07-01", "medium");
+    const todo3 = new Todo("Workout", "Leg day at the gym", "2025-06-27", "high");
+    const todo4 = new Todo("Read book", "Finish reading 'Clean Code'", "2025-07-05", "low");
+    const todo5 = new Todo("Pay bills", "Electricity and water", "2025-06-28", "high");
 
-    const shower = new Todo("shower", "take a shower nerd", "right about now", "IMPORTANT")
-    const doStuff = new Todo("stuff", "do stuff", "dunno", "?")
+    const shower = new Todo("Take a shower", "You stink", "today", "high")
 
     allTodosList.add(todo1);
     allTodosList.add(todo2);
@@ -113,13 +161,11 @@ function testClasses() {
     allTodosList.add(todo4);
     allTodosList.add(todo5);
     allTodosList.add(shower);
-    allTodosList.add(doStuff);
 
     allTodos(allTodosList)
 
-    const stuff = new Project("Stuff!")
+    const stuff = new Project("Important stuff")
     stuff.addTodo(shower)
-    stuff.addTodo(doStuff)
 
     const hygiene = new Project("Hygiene")
     hygiene.addTodo(shower)
@@ -131,5 +177,5 @@ function testClasses() {
 }
 testClasses()
 
-
+export {showTodoInfo}
 

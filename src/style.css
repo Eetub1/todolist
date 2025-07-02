@@ -21,3 +21,16 @@ div {
   height: 100vh;
   width: 20vw;
 }
+
+.todoParagraphElem {
+  display: inline;
+}
+
+.todoTitle:hover {
+  background-color: red;
+}
+
+.todoElementContainer {
+  display: flex;
+  justify-content: space-between;
+}
