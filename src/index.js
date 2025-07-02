@@ -3,7 +3,7 @@ import { Todo } from './todo.js'
 import { Todos } from './todos.js';
 import { Project } from './project.js'
 import { Projects } from './projects.js';
-import { drawProjects, allTodos, drawProjectTodos} from './handleUI.js';
+import { drawProjects, setAllTodosCont, drawProjectTodos, drawAllTodos, drawTodo} from './handleUI.js';
 
 const projects = new Projects()
 const allTodosList = new Todos()
@@ -19,6 +19,9 @@ const submitProjectBtn = document.getElementById("projectSubmitBtn")
 submitProjectBtn.addEventListener("click", (event) => createNewProject(event))
 const projectForm = document.forms.addProjectForm
 
+let project
+let projectName
+
 function createNewProject(event) {
     event.preventDefault()
     const name = projectForm.prName.value
@@ -28,6 +31,30 @@ function createNewProject(event) {
     drawProjects(projects)
     projectDialog.close()
     projectForm.reset()
+}
+
+//finds the current project that is selected
+function findCurrentProjectInfo() {
+    //saving the clicked projects name so we can add the todo to
+        //a specific project
+        project = document.getElementById("projectName")
+        if (project === null) return
+        projectName = project.getAttribute("project")
+}
+
+//adds a todo to the project that is selected
+function addToCurrentProject(newTodo) {
+    //finding the right project object
+        projects.projects.forEach(project => {
+            if (project.name === projectName) {
+                project.addTodo(newTodo)
+                drawProjectTodos(project)
+            }
+        })
+}
+
+function findProjectObject() {
+    return projects.projects.find(project => project.name === projectName)
 }
 
 //==================================================================================
@@ -66,18 +93,8 @@ function addTodo(event) {
     //and only add the todo to the all todos page, not also
     //to a specific project
     if (!addOnlyToAllTodos) {
-        //saving the clicked projects name so we can add the todo to
-        //a specific project
-        const project = document.getElementById("projectName")
-        const projectName = project.getAttribute("project")
-
-        //finding the right project object
-        projects.projects.forEach(project => {
-            if (project.name === projectName) {
-                project.addTodo(newTodo)
-                drawProjectTodos(project)
-            }
-        })
+        findCurrentProjectInfo()
+        addToCurrentProject(newTodo)
     }
     todoDialog.close()
     todoForm.reset()
@@ -138,7 +155,19 @@ function applyChanges(event) {
 
     todoDialog.close()
     todoForm.reset()
-    
+
+    //tässä pitäisi jotenkin päivittää näyttö
+    //jos ollaan all todos näkymässä niin piirretään alltodos uudestaan
+    //jos taas ollaan jossain projectin kohdalla niin piirretään projekti uusiks
+    //allTodosList.todos.forEach(todo => drawTodo(todo) )
+    findCurrentProjectInfo()
+    if (project === null) {
+        drawAllTodos(allTodosList)
+    } else {
+        const projectObj = findProjectObject()
+        console.log(projectObj);
+        drawProjectTodos(projectObj)
+    }
 }
 
 //==================================================================================
@@ -162,7 +191,7 @@ function testClasses() {
     allTodosList.add(todo5);
     allTodosList.add(shower);
 
-    allTodos(allTodosList)
+    setAllTodosCont(allTodosList)
 
     const stuff = new Project("Important stuff")
     stuff.addTodo(shower)

@@ -55,17 +55,21 @@ function drawProjectTodos(project) {
 
 /**
  * Adds an eventlistener to the all todos div so that when it's pressed,
- * all todos are drawn on the screen
+ * calls the drawAllTodos function
  * @param {Object} todos Object containing all todos
  */
-function allTodos(todos) {
+function setAllTodosCont(todos) {
     const p = document.createElement("p")
     p.textContent = "All todos"
     p.addEventListener("click", () => {
-        todoCont.textContent = ""
-        todos.todos.forEach(todo => drawTodo(todo))
+        drawAllTodos(todos)
     })
     allTodosBtnCont.appendChild(p)
+}
+
+function drawAllTodos(todos) {
+    todoCont.textContent = ""
+    todos.todos.forEach(todo => drawTodo(todo))
 }
 
 /**
@@ -90,4 +94,4 @@ function drawTodo(todo) {
     todoCont.appendChild(div)
 }
 
-export {drawProjects, allTodos, drawProjectTodos}
+export {drawProjects, setAllTodosCont, drawProjectTodos, drawAllTodos, drawTodo}
