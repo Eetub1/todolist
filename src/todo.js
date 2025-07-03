@@ -1,10 +1,11 @@
 class Todo {
     static id = 1
-    constructor(title, description, dueDate, priority) {
+    constructor(title, description, dueDate, priority, project_id=-1) {
         this.title = title
         this.description = description
         this.dueDate = dueDate
         this.priority = priority
+        this.project_id = project_id
         this.setTodo_id()
     }
 

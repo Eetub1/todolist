@@ -34,3 +34,11 @@ div {
   display: flex;
   justify-content: space-between;
 }
+
+.removeTodoBtn {
+  margin-left: 10px;
+}
+
+.removeTodoBtn:hover {
+  background-color: red;
+}

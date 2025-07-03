@@ -28,7 +28,7 @@ function createNewProject(event) {
     if (name.trim() === "") return
     const newProject = new Project(name)
     projects.add(newProject)
-    drawProjects(projects)
+    drawProjects(projects, allTodosList)
     projectDialog.close()
     projectForm.reset()
 }
@@ -48,7 +48,7 @@ function addToCurrentProject(newTodo) {
         projects.projects.forEach(project => {
             if (project.name === projectName) {
                 project.addTodo(newTodo)
-                drawProjectTodos(project)
+                drawProjectTodos(project, allTodosList)
             }
         })
 }
@@ -167,7 +167,7 @@ function applyChanges(event) {
         drawAllTodos(allTodosList)
     } else {
         const projectObj = findProjectObject()
-        drawProjectTodos(projectObj)
+        drawProjectTodos(projectObj, allTodosList)
     }
 }
 
@@ -195,7 +195,6 @@ function testClasses() {
     setAllTodosCont(allTodosList)
 
     const stuff = new Project("Important stuff")
-    stuff.addTodo(shower)
 
     const hygiene = new Project("Hygiene")
     hygiene.addTodo(shower)
@@ -203,7 +202,7 @@ function testClasses() {
     projects.add(stuff)
     projects.add(hygiene)
 
-    drawProjects(projects)
+    drawProjects(projects, allTodosList)
 }
 testClasses()
 

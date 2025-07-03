@@ -9,7 +9,7 @@ const allTodosBtnCont = document.getElementById("allTodos")
  * Also adds eventlisteners to each one
  * @param {Object} projects Object that contains all projects 
  */
-function drawProjects(projects) {
+function drawProjects(projects, allTodosList) {
     const projectsCont = document.getElementById("projects")
     projectsCont.textContent = ""
 
@@ -17,7 +17,7 @@ function drawProjects(projects) {
     projects.projects.forEach(project => {
         const p = document.createElement("p")
         p.id = project.project_id
-        p.addEventListener("click", () => drawProjectTodos(project))
+        p.addEventListener("click", () => drawProjectTodos(project, allTodosList))
         p.textContent = project.name
         projectsCont.appendChild(p)
     })
@@ -27,7 +27,7 @@ function drawProjects(projects) {
  * Draws a specific projects todos on the screen 
  * @param {Object} project  
  */
-function drawProjectTodos(project) {
+function drawProjectTodos(project, allTodosList) {
     todoCont.textContent = ""
 
     const div = document.createElement("div")
@@ -48,7 +48,15 @@ function drawProjectTodos(project) {
     div.appendChild(p)
     div.appendChild(button)
     todoCont.appendChild(div)
-    project.todos.forEach(todo => drawTodo(todo))
+    
+    let projectTodos = allTodosList.todos.map(todo => {
+        if (project.project_id === todo.project_id) {
+            return todo
+        }
+        return false
+    })
+    projectTodos = projectTodos.filter(todo => todo !== false)
+    projectTodos.forEach(todo => drawTodo(todo))
 }
 
 /**
@@ -85,10 +93,19 @@ function drawTodo(todo) {
     p.textContent = todo.title
     p.addEventListener("click", (event) => showTodoInfo(event))
 
+    const remove = document.createElement("p")
+    remove.textContent = "X"
+    remove.className = "todoParagraphElem removeTodoBtn"
+
+    const div2 = document.createElement("div")
+    div2.appendChild(date)
+    div2.appendChild(remove)
+
+
     const div = document.createElement("div")
     div.className = "todoElementContainer"
     div.appendChild(p)
-    div.appendChild(date)
+    div.appendChild(div2)
     todoCont.appendChild(div)
 }
 
