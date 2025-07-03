@@ -3,19 +3,27 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
   <title>Todo-list</title>
 </head>
 <body>
-  <div id="leftsideBar">
-    <div id="allTodos">
-      <button id="addToAllTodos">Add todo</button>
+  <div id="main">
+    <div id="leftsideBar">
+      <div id="allTodos">
+      </div>
+      <div id="projects">Projects: </div>
+      <div id="addStuffCont">
+        <button id="addProject">Add project</button>
+        <button id="addToAllTodos">Add todo</button>
+      </div>
     </div>
-    <div id="projects">Projects: </div>
-    <div>
-      <button id="addProject">Add new project</button>
-    </div>
+
+    <div id="todos"></div>
   </div>
-  <div id="todos"></div>
+  
+
+
+
 
   <dialog id="addProjectDialog">
     <form action="#" id="addProjectForm">

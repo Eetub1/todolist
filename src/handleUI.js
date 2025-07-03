@@ -19,6 +19,7 @@ function drawProjects(projects, allTodosList) {
         p.id = project.project_id
         p.addEventListener("click", () => drawProjectTodos(project, allTodosList))
         p.textContent = project.name
+        p.className = "projectParagraph"
         projectsCont.appendChild(p)
     })
 }
@@ -61,6 +62,7 @@ function drawProjectTodos(project, allTodosList) {
 function setAllTodosCont(todos) {
     const p = document.createElement("p")
     p.textContent = "All todos"
+    p.className = "projectParagraph"
     p.addEventListener("click", () => {
         drawAllTodos(todos)
     })
@@ -94,6 +96,7 @@ function drawTodo(todo) {
     remove.addEventListener("click", (event) => findRemovableTodoId(event))
 
     const div2 = document.createElement("div")
+    div2.className = "removeBtnAndDateCont"
     div2.appendChild(date)
     div2.appendChild(remove)
 

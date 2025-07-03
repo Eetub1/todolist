@@ -1,38 +1,91 @@
 body {
   font-family: sans-serif;
   display: flex;
+  justify-content: center;
+  align-items: center;
   margin: 0;
   padding: 0;
+  color: white;
+  font-family: 'Roboto', sans-serif;
+}
+
+button {
+  border-radius: 5px;
+}
+
+/*p {
+  border: 1px solid red;
 }
 
 div {
-  border: 1px solid red;
+  border: 1px solid green;
+}*/
+
+#main {
+  max-width: 800px;
+  display: flex;
+  width: 70vw;
+  height: 70vh;
+  margin-top: 5rem;
+  border-radius: 20px;
 }
 
 #projects {
   width: 100%;
 }
 
+.projectParagraph {
+  padding: 5px
+}
+
+.projectParagraph:hover {
+  border-radius: 10px;
+  background-color: #193761;
+}
+
 #todos {
-  width: 50vw;
+  background-color: #162131;
+  width: 70%;
+  border-radius: 0px 20px 20px 0px;
 }
 
 #leftsideBar {
-  height: 100vh;
-  width: 20vw;
+  background-color: #0B192C;
+  width: 30%;
+  border-radius: 20px 0px 0px 20px;
+}
+
+#addStuffCont {
+  display: flex;
+  justify-content: space-evenly;
 }
 
 .todoParagraphElem {
   display: inline;
 }
 
+.removeTodoBtn {
+  width: 1.5rem;
+  text-align: center;
+}
+
+.todoTitle {
+  padding: 5px;
+}
+
 .todoTitle:hover {
-  background-color: red;
+  border-radius: 10px;
+  background-color: #193761;
 }
 
 .todoElementContainer {
   display: flex;
   justify-content: space-between;
+  margin: 5px 5px 5px 5px;
+}
+
+.removeBtnAndDateCont {
+  display: flex;
 }
 
 .removeTodoBtn {
@@ -40,5 +93,6 @@ div {
 }
 
 .removeTodoBtn:hover {
+  border-radius: 10px;
   background-color: red;
 }
