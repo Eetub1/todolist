@@ -1,5 +1,5 @@
-import { showTodoInfo } from "./index.js"
-import {todoDialog, saveChangesBtn, todoSubmitBtn} from "./index.js"
+
+import {todoDialog, saveChangesBtn, todoSubmitBtn, showTodoInfo, removeTodo} from "./index.js"
 
 const todoCont = document.getElementById("todos")
 const allTodosBtnCont = document.getElementById("allTodos")
@@ -49,13 +49,7 @@ function drawProjectTodos(project, allTodosList) {
     div.appendChild(button)
     todoCont.appendChild(div)
     
-    let projectTodos = allTodosList.todos.map(todo => {
-        if (project.project_id === todo.project_id) {
-            return todo
-        }
-        return false
-    })
-    projectTodos = projectTodos.filter(todo => todo !== false)
+    const projectTodos = allTodosList.todos.filter(todo => project.project_id === todo.project_id);
     projectTodos.forEach(todo => drawTodo(todo))
 }
 
@@ -96,6 +90,8 @@ function drawTodo(todo) {
     const remove = document.createElement("p")
     remove.textContent = "X"
     remove.className = "todoParagraphElem removeTodoBtn"
+    remove.id = todo.todo_id
+    remove.addEventListener("click", (event) => findRemovableTodoId(event))
 
     const div2 = document.createElement("div")
     div2.appendChild(date)
@@ -107,6 +103,11 @@ function drawTodo(todo) {
     div.appendChild(p)
     div.appendChild(div2)
     todoCont.appendChild(div)
+}
+
+function findRemovableTodoId(event) {
+    const todoId = event.target.id
+    removeTodo(todoId)    
 }
 
 export {drawProjects, setAllTodosCont, drawProjectTodos, drawAllTodos, drawTodo}

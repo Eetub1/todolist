@@ -7,7 +7,6 @@ import { drawProjects, setAllTodosCont, drawProjectTodos, drawAllTodos, drawTodo
 
 const projects = new Projects()
 const allTodosList = new Todos()
-let addOnlyToAllTodos = false
 
 //==================================================================================
 
@@ -36,21 +35,21 @@ function createNewProject(event) {
 //finds the current project that is selected
 function findCurrentProjectInfo() {
     //saving the clicked projects name so we can add the todo to
-        //a specific project
-        project = document.getElementById("projectName")
-        if (project === null) return
-        projectName = project.getAttribute("project")
+    //a specific project
+    project = document.getElementById("projectName")
+    if (project === null) return
+    projectName = project.getAttribute("project")
 }
 
 //adds a todo to the project that is selected
 function addToCurrentProject(newTodo) {
     //finding the right project object
-        projects.projects.forEach(project => {
-            if (project.name === projectName) {
-                project.addTodo(newTodo)
-                drawProjectTodos(project, allTodosList)
-            }
-        })
+    projects.projects.forEach(project => {
+        if (project.name === projectName) {
+            project.addTodo(newTodo)
+            drawProjectTodos(project, allTodosList)
+        }
+    })
 }
 
 function findProjectObject() {
@@ -81,7 +80,6 @@ function addTodo(event) {
         if (button.checked) priority = button.value;
     })
 
-    //check if any field is empty
     if (title.trim() === "" || description.trim() === "" || dueDate.trim() === "") return
 
     //console.log(title, description, dueDate, priority);
@@ -89,32 +87,19 @@ function addTodo(event) {
     const newTodo = new Todo(title, description, dueDate, priority)
     allTodosList.add(newTodo)
 
-    //if this variable is true then skip this block of code
-    //and only add the todo to the all todos page, not also
-    //to a specific project
-    if (!addOnlyToAllTodos) {
-        findCurrentProjectInfo()
-        addToCurrentProject(newTodo)
-    } else {
-        drawAllTodos(allTodosList)
-    }
     todoDialog.close()
     todoForm.reset()
-    addOnlyToAllTodos = false
+    updateScreen()
+    if (project !== null) addToCurrentProject(newTodo)
 }
 
 //adding a new todo only to all todos, not into a specific project
 const addToAllTodosBtn = document.getElementById("addToAllTodos")
-addToAllTodosBtn.addEventListener("click", addToAllTodos)
-
-//when Add todo button is pressed, it sets the variable true, so
-//that the todo only goes to the all todos page
-function addToAllTodos() {
-    addOnlyToAllTodos = true
+addToAllTodosBtn.addEventListener("click", () => {
     todoDialog.showModal()
     saveChangesBtn.style.display = "none"
     todoSubmitBtn.style.display = "block"
-}
+})
 
 //==================================================================================
 let clickedTodo
@@ -124,8 +109,6 @@ function showTodoInfo(event) {
     todoDialog.showModal()
     saveChangesBtn.style.display = "block"
     todoSubmitBtn.style.display = "none"
-    //console.log(event.target);
-
     
     for (const todo of allTodosList.todos) {
         if (todo.title === event.target.id) {
@@ -157,11 +140,10 @@ function applyChanges(event) {
 
     todoDialog.close()
     todoForm.reset()
+    updateScreen()
+}
 
-    //tässä pitäisi jotenkin päivittää näyttö
-    //jos ollaan all todos näkymässä niin piirretään alltodos uudestaan
-    //jos taas ollaan jossain projectin kohdalla niin piirretään projekti uusiks
-    //allTodosList.todos.forEach(todo => drawTodo(todo) )
+function updateScreen() {
     findCurrentProjectInfo()
     if (project === null) {
         drawAllTodos(allTodosList)
@@ -169,6 +151,12 @@ function applyChanges(event) {
         const projectObj = findProjectObject()
         drawProjectTodos(projectObj, allTodosList)
     }
+}
+
+function removeTodo(id) {
+    let num = parseInt(id)
+    allTodosList.remove(num)
+    updateScreen()
 }
 
 //==================================================================================
@@ -206,6 +194,5 @@ function testClasses() {
 }
 testClasses()
 
-export {showTodoInfo}
-export {todoDialog, saveChangesBtn, todoSubmitBtn}
+export {todoDialog, saveChangesBtn, todoSubmitBtn, showTodoInfo, removeTodo}
 
