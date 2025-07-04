@@ -27,25 +27,57 @@
 
   <dialog id="addProjectDialog">
     <form action="#" id="addProjectForm">
-      <div class="addProjectFormRow"><label>name<input name="prName" type="text"></label></div>
+      <div class="addProjectFormRow"><label>Project name: <input name="prName" type="text"></label></div>
       <button type="submit" id="projectSubmitBtn">submit</button>
     </form>
   </dialog>
 
   <dialog id="addTodoDialog">
     <form action="#" id="addTodoForm">
-      <div class="addTodoFormRow"><label>Title: <input name="title" type="text"></label></div>
-      <div class="addTodoFormRow"><label>Description: <input name="description" type="text"></label></div>
-      <div class="addTodoFormRow"><label>dueDate<input name="dueDate" type="text"></label></div>
 
       <div class="addTodoFormRow">
-        <p>Priority: </p>
-        <label>Low<input class="todoRadioBtn" value="low" name="priority" type="radio" checked></label>
-        <label>Medium<input class="todoRadioBtn" value="medium" name="priority" type="radio"></label>
-        <label>High<input class="todoRadioBtn" value="high" name="priority" type="radio"></label>
+        <label for="title">Title: </label>
+        <input name="title" type="text">
       </div>
-      <button id="todoSubmitBtn">submit</button>
-      <button id="todoSaveChanges">save changes</button>
+
+      <div class="addTodoFormRow">
+        <label for="description">Description: </label>
+        <input name="description" type="text">
+      </div>
+
+      <div class="addTodoFormRow">
+        <label for="dueDate">dueDate: </label>
+        <input name="dueDate" type="text">
+      </div>
+
+      <div id="radioButtonSection">
+        <p>Priority: </p>
+
+        <div id="radioButtonCont">
+          
+          <div class="radioBtnAndLabelCont">
+            <label>Low</label>
+            <input class="todoRadioBtn" value="low" name="priority" type="radio" checked>
+          </div>
+          
+          <div class="radioBtnAndLabelCont">
+            <label>Medium</label>
+            <input class="todoRadioBtn" value="medium" name="priority" type="radio">
+          </div>
+
+          <div class="radioBtnAndLabelCont">
+            <label>High</label>
+            <input class="todoRadioBtn" value="high" name="priority" type="radio">
+          </div>
+
+        </div>
+        
+      </div>
+      <div id="todoFormButtonCont">
+        <button id="todoSubmitBtn">submit</button>
+        <button id="todoSaveChanges">save changes</button>
+      </div>
+    
     </form>
   </dialog>
 
