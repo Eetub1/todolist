@@ -8,6 +8,9 @@ import { drawProjects, setAllTodosCont, drawProjectTodos, drawAllTodos, drawTodo
 const projects = new Projects()
 const allTodosList = new Todos()
 
+const closeTodoModalBtn = document.getElementById("todoFormCloseBtn")
+const closeProjectModalBtn = document.getElementById("projectFormCloseBtn")
+
 //==================================================================================
 
 //code for adding a new project
@@ -25,6 +28,7 @@ function createNewProject(event) {
     event.preventDefault()
     const name = projectForm.prName.value
     if (name.trim() === "") return
+
     const newProject = new Project(name)
     projects.add(newProject)
     drawProjects(projects, allTodosList)
@@ -159,6 +163,16 @@ function removeTodo(id) {
     updateScreen()
 }
 
+closeTodoModalBtn.addEventListener("click", () => {
+    todoDialog.close()
+    todoForm.reset()
+})
+
+closeProjectModalBtn.addEventListener("click", () => {
+    projectDialog.close()
+    projectForm.reset()
+})
+
 //==================================================================================
 
 //function adds example data to the page
@@ -171,24 +185,17 @@ function testClasses() {
     const todo4 = new Todo("Read book", "Finish reading 'Clean Code'", "2025-07-05", "low");
     const todo5 = new Todo("Pay bills", "Electricity and water", "2025-06-28", "high");
 
-    const shower = new Todo("Take a shower", "You stink", "today", "high")
-
     allTodosList.add(todo1);
     allTodosList.add(todo2);
     allTodosList.add(todo3);
     allTodosList.add(todo4);
     allTodosList.add(todo5);
-    allTodosList.add(shower);
 
     setAllTodosCont(allTodosList)
 
-    const stuff = new Project("Important stuff")
+    const defaultProject = new Project("Default project")
 
-    const hygiene = new Project("Hygiene")
-    hygiene.addTodo(shower)
-
-    projects.add(stuff)
-    projects.add(hygiene)
+    projects.add(defaultProject)
 
     drawProjects(projects, allTodosList)
 }

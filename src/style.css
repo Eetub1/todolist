@@ -37,8 +37,14 @@ div {
   border-radius: 20px;
 }
 
+/****************************projects************************************/
+
 #projects {
   width: 100%;
+}
+
+#projectName {
+  font-style: italic;
 }
 
 .projectParagraph {
@@ -50,9 +56,37 @@ div {
   background-color: #193761;
 }
 
+.addProjectFormRow {
+  display: grid;
+}
+
+#addProjectBtnCont {
+  display: flex;
+  justify-content: center;
+}
+
 #projectSubmitBtn {
   margin-top: 5px;
 }
+
+#projectFormCloseBtn {
+  padding: 3px;
+  left: 180px;
+  bottom: 15px;
+  position: relative;
+  display: inline;
+}
+
+#projectFormCloseBtn:hover {
+  border-radius: 10px;
+  background-color: red;
+}
+
+#addProjectDialog {
+  position: absolute;
+}
+
+/****************************todos************************************/
 
 #todos {
   background-color: #162131;
@@ -85,6 +119,7 @@ div {
 }
 
 .addTodoFormRow {
+  margin-bottom: 15px;
   display: grid;
   gap: 0.3em
 }
@@ -94,6 +129,23 @@ div {
   border-radius: 10px;
 }
 
+#addTodoDialog {
+  position: absolute;
+}
+
+#todoFormCloseBtn {
+  padding: 3px;
+  left: 185px;
+  bottom: 15px;
+  position: relative;
+  display: inline;
+}
+
+#todoFormCloseBtn:hover {
+  border-radius: 10px;
+  background-color: red;
+}
+
 #radioButtonSection {
   display: flex;
   justify-content: space-around;
@@ -101,6 +153,7 @@ div {
 }
 
 #radioButtonCont {
+  margin-bottom: 5px;
   display: flex;
   flex-direction: column;
 }
@@ -116,8 +169,9 @@ div {
   margin-top: 5px;
 }
 
-.radioBtnAndLabelCont > input {
-  margin-left: 1rem;
+.radioBtnAndLabelCont {
+  display: flex;
+  justify-content: space-between;
 }
 
 .todoElementContainer {

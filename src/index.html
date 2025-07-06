@@ -17,22 +17,27 @@
         <button id="addToAllTodos">Add todo</button>
       </div>
     </div>
-
     <div id="todos"></div>
   </div>
   
-
-
-
-
   <dialog id="addProjectDialog">
+    <p id="projectFormCloseBtn">X</p>
     <form action="#" id="addProjectForm">
-      <div class="addProjectFormRow"><label>Project name: <input name="prName" type="text"></label></div>
-      <button type="submit" id="projectSubmitBtn">submit</button>
+
+      <div class="addProjectFormRow">
+        <label for="prName">Project name: </label>
+        <input name="prName" type="text">
+      </div>
+
+      <div id="addProjectBtnCont">
+        <button type="submit" id="projectSubmitBtn">submit</button>
+      </div>
+      
     </form>
   </dialog>
 
   <dialog id="addTodoDialog">
+    <p id="todoFormCloseBtn">X</p>
     <form action="#" id="addTodoForm">
 
       <div class="addTodoFormRow">
@@ -42,12 +47,12 @@
 
       <div class="addTodoFormRow">
         <label for="description">Description: </label>
-        <input name="description" type="text">
+        <textarea name="description"></textarea>
       </div>
 
       <div class="addTodoFormRow">
         <label for="dueDate">dueDate: </label>
-        <input name="dueDate" type="text">
+        <input name="dueDate" type="date">
       </div>
 
       <div id="radioButtonSection">
@@ -73,6 +78,7 @@
         </div>
         
       </div>
+
       <div id="todoFormButtonCont">
         <button id="todoSubmitBtn">submit</button>
         <button id="todoSaveChanges">save changes</button>

@@ -44,7 +44,7 @@ function drawProjectTodos(project, allTodosList) {
     const p = document.createElement("p")
     p.id = "projectName"
     p.setAttribute("project", project.name)
-    p.textContent = `Project name: ${project.name}`
+    p.textContent = project.name
 
     div.appendChild(p)
     div.appendChild(button)
