@@ -1,5 +1,5 @@
 
-import {todoDialog, saveChangesBtn, todoSubmitBtn, showTodoInfo, removeTodo} from "./index.js"
+import {todoDialog, saveChangesBtn, todoSubmitBtn, showTodoInfo, removeTodo, removeProject} from "./index.js"
 
 const todoCont = document.getElementById("todos")
 const allTodosBtnCont = document.getElementById("allTodos")
@@ -13,14 +13,27 @@ function drawProjects(projects, allTodosList) {
     const projectsCont = document.getElementById("projects")
     projectsCont.textContent = ""
 
-    //projects.projects is a list containing all projects, confusing naming
     projects.projects.forEach(project => {
+        const projectDiv = document.createElement("div")
+        projectDiv.id = project.project_id
+        projectDiv.addEventListener("click", () => drawProjectTodos(project, allTodosList))
+        //projectDiv.textContent = project.name
+        projectDiv.className = "projectDiv"
+
+        const nameP = document.createElement("p")
+        nameP.textContent = project.name
+        nameP.className = "inline"
+
         const p = document.createElement("p")
-        p.id = project.project_id
-        p.addEventListener("click", () => drawProjectTodos(project, allTodosList))
-        p.textContent = project.name
-        p.className = "projectParagraph"
-        projectsCont.appendChild(p)
+        p.textContent = "X"
+        p.className = "deleteProjectBtn"
+        p.id = `¤%&#-${project.project_id}`
+        p.addEventListener("click", (event) => removeProject(event))
+
+        projectDiv.appendChild(nameP)
+        projectDiv.appendChild(p)
+
+        projectsCont.appendChild(projectDiv)
     })
 }
 
@@ -60,13 +73,13 @@ function drawProjectTodos(project, allTodosList) {
  * @param {Object} todos Object containing all todos
  */
 function setAllTodosCont(todos) {
-    const p = document.createElement("p")
-    p.textContent = "All todos"
-    p.className = "projectParagraph"
-    p.addEventListener("click", () => {
+    const div = document.createElement("div")
+    div.textContent = "All todos"
+    div.className = "projectDiv"
+    div.addEventListener("click", () => {
         drawAllTodos(todos)
     })
-    allTodosBtnCont.appendChild(p)
+    allTodosBtnCont.appendChild(div)
 }
 
 function drawAllTodos(todos) {

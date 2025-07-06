@@ -5,8 +5,8 @@ import { Project } from './project.js'
 import { Projects } from './projects.js';
 import { drawProjects, setAllTodosCont, drawProjectTodos, drawAllTodos, drawTodo} from './handleUI.js';
 
-const projects = new Projects()
-const allTodosList = new Todos()
+let projects = new Projects()
+let allTodosList = new Todos()
 
 const closeTodoModalBtn = document.getElementById("todoFormCloseBtn")
 const closeProjectModalBtn = document.getElementById("projectFormCloseBtn")
@@ -58,6 +58,21 @@ function addToCurrentProject(newTodo) {
 
 function findProjectObject() {
     return projects.projects.find(project => project.name === projectName)
+}
+
+function removeProject(event) {
+    event.stopPropagation();
+    const id = parseInt(event.target.id.split("-")[1])
+    console.log(id);
+    console.log(event.target)
+    console.log("moi")
+
+    projects.projects = projects.projects.filter(project => project.project_id !== id)
+
+    //we need to remove all todos that have the project_id === id
+    allTodosList.todos = allTodosList.todos.filter(todo => todo.project_id !== id)
+
+    drawProjects(projects, allTodosList)
 }
 
 //==================================================================================
@@ -201,5 +216,5 @@ function testClasses() {
 }
 testClasses()
 
-export {todoDialog, saveChangesBtn, todoSubmitBtn, showTodoInfo, removeTodo}
+export {todoDialog, saveChangesBtn, todoSubmitBtn, showTodoInfo, removeTodo, removeProject}
 

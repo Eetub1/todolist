@@ -37,6 +37,10 @@ div {
   border-radius: 20px;
 }
 
+.inline {
+  display: inline;
+}
+
 /****************************projects************************************/
 
 #projects {
@@ -47,11 +51,13 @@ div {
   font-style: italic;
 }
 
-.projectParagraph {
-  padding: 5px
+.projectDiv {
+  padding: 5px;
+  margin-bottom: 7px;
+  margin-top: 7px;
 }
 
-.projectParagraph:hover {
+.projectDiv:hover {
   border-radius: 10px;
   background-color: #193761;
 }
@@ -84,6 +90,15 @@ div {
 
 #addProjectDialog {
   position: absolute;
+}
+
+.deleteProjectBtn {
+  display: inline;
+}
+
+.deleteProjectBtn:hover {
+  border-radius: 10px;
+  background-color: red;
 }
 
 /****************************todos************************************/
