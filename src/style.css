@@ -52,9 +52,14 @@ div {
 }
 
 .projectDiv {
+  display: flex;
+  justify-content: space-between;
   padding: 5px;
-  margin-bottom: 7px;
-  margin-top: 7px;
+  margin: 7px 0 7px 0;
+}
+
+.projectInfoElement {
+  margin: 0;
 }
 
 .projectDiv:hover {

@@ -63,16 +63,20 @@ function findProjectObject() {
 function removeProject(event) {
     event.stopPropagation();
     const id = parseInt(event.target.id.split("-")[1])
-    console.log(id);
-    console.log(event.target)
-    console.log("moi")
 
+    //deleting the project from the list and then updating the projects list
     projects.projects = projects.projects.filter(project => project.project_id !== id)
 
-    //we need to remove all todos that have the project_id === id
+    //deleting all the todos belonging to the project that was deleted
     allTodosList.todos = allTodosList.todos.filter(todo => todo.project_id !== id)
 
+    //drawing the projects container again
     drawProjects(projects, allTodosList)
+
+    //drawing theAllTodos page for now
+    //maybe in the future make it so that if there is another project remaining, that is rendered instead
+    //of always being allTodos that gets rendered whenever a project is deleted
+    drawAllTodos(allTodosList)
 }
 
 //==================================================================================

@@ -22,11 +22,11 @@ function drawProjects(projects, allTodosList) {
 
         const nameP = document.createElement("p")
         nameP.textContent = project.name
-        nameP.className = "inline"
+        nameP.className = "inline projectInfoElement"
 
         const p = document.createElement("p")
         p.textContent = "X"
-        p.className = "deleteProjectBtn"
+        p.className = "deleteProjectBtn projectInfoElement"
         p.id = `¤%&#-${project.project_id}`
         p.addEventListener("click", (event) => removeProject(event))
 
