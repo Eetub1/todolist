@@ -194,31 +194,51 @@ closeProjectModalBtn.addEventListener("click", () => {
 
 //==================================================================================
 
+
 //function adds example data to the page
-function testClasses() {
+function setTodoList() {
 
     //chatGPT generated example data
     const todo1 = new Todo("Buy groceries", "Milk, eggs, bread", "2025-06-30", "high");
     const todo2 = new Todo("Call mom", "Check in and chat", "2025-07-01", "medium");
     const todo3 = new Todo("Workout", "Leg day at the gym", "2025-06-27", "high");
-    const todo4 = new Todo("Read book", "Finish reading 'Clean Code'", "2025-07-05", "low");
-    const todo5 = new Todo("Pay bills", "Electricity and water", "2025-06-28", "high");
 
     allTodosList.add(todo1);
     allTodosList.add(todo2);
     allTodosList.add(todo3);
-    allTodosList.add(todo4);
-    allTodosList.add(todo5);
 
     setAllTodosCont(allTodosList)
 
     const defaultProject = new Project("Default project")
+    defaultProject.addTodo(todo1)
+    defaultProject.addTodo(todo2)
+    defaultProject.addTodo(todo3)
 
     projects.add(defaultProject)
 
     drawProjects(projects, allTodosList)
 }
-testClasses()
+
+/*function setDataObj() {
+    dataObj = {
+    "projects": projects,
+    "allTodos": allTodosList
+    }
+
+    const dataObjSerialized = JSON.stringify(dataObj)
+    console.log(dataObjSerialized);
+    localStorage.setItem("dataObj", dataObjSerialized)
+    const dataObjDeserialized = JSON.parse(localStorage.getItem("dataObj"))
+    console.log(dataObjDeserialized);
+}
+
+//gets the dataObject from localstorage and updates the global variable dataObj
+function fetchData() {
+    const dataObjDeserialized = JSON.parse(localStorage.getItem("dataObj"))
+    setDataObj()
+}*/
+
+setTodoList()
 
 export {todoDialog, saveChangesBtn, todoSubmitBtn, showTodoInfo, removeTodo, removeProject}
 
