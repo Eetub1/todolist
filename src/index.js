@@ -34,6 +34,9 @@ function createNewProject(event) {
     drawProjects(projects, allTodosList)
     projectDialog.close()
     projectForm.reset()
+
+    //LOCALSTORAGE
+    setDataObj()
 }
 
 //finds the current project that is selected
@@ -77,6 +80,9 @@ function removeProject(event) {
     //maybe in the future make it so that if there is another project remaining, that is rendered instead
     //of always being allTodos that gets rendered whenever a project is deleted
     drawAllTodos(allTodosList)
+
+    //LOCALSTORAGE
+    setDataObj()
 }
 
 //==================================================================================
@@ -114,6 +120,9 @@ function addTodo(event) {
     todoForm.reset()
     updateScreen()
     if (project !== null) addToCurrentProject(newTodo)
+
+    //LOCALSTORAGE
+    setDataObj()
 }
 
 //adding a new todo only to all todos, not into a specific project
@@ -164,6 +173,9 @@ function applyChanges(event) {
     todoDialog.close()
     todoForm.reset()
     updateScreen()
+
+    //LOCALSTORAGE
+    setDataObj()
 }
 
 function updateScreen() {
@@ -180,6 +192,9 @@ function removeTodo(id) {
     let num = parseInt(id)
     allTodosList.remove(num)
     updateScreen()
+
+    //LOCALSTORAGE
+    setDataObj()
 }
 
 closeTodoModalBtn.addEventListener("click", () => {
@@ -197,8 +212,9 @@ closeProjectModalBtn.addEventListener("click", () => {
 
 //function adds example data to the page
 function setTodoList() {
+    fetchData()
 
-    //chatGPT generated example data
+    /*//chatGPT generated example data
     const todo1 = new Todo("Buy groceries", "Milk, eggs, bread", "2025-06-30", "high");
     const todo2 = new Todo("Call mom", "Check in and chat", "2025-07-01", "medium");
     const todo3 = new Todo("Workout", "Leg day at the gym", "2025-06-27", "high");
@@ -207,38 +223,82 @@ function setTodoList() {
     allTodosList.add(todo2);
     allTodosList.add(todo3);
 
-    setAllTodosCont(allTodosList)
-
     const defaultProject = new Project("Default project")
     defaultProject.addTodo(todo1)
     defaultProject.addTodo(todo2)
     defaultProject.addTodo(todo3)
-
     projects.add(defaultProject)
 
+    setAllTodosCont(allTodosList)
     drawProjects(projects, allTodosList)
+    drawAllTodos(allTodosList)*/
+
+    //LOCALSTORAGE
+    setDataObj()
 }
 
-/*function setDataObj() {
-    dataObj = {
+function setDataObj() {
+    /*const dataObj = {
     "projects": projects,
     "allTodos": allTodosList
+    }*/
+
+    const dataObj = {
+        projects: projects.projects.map(project => ({
+            name: project.name,
+            project_id: project.project_id
+        })),
+        allTodos: allTodosList.todos.map(todo => ({
+            title: todo.title,
+            description: todo.description,
+            dueDate: todo.dueDate,
+            priority: todo.priority,
+            project_id: todo.project_id,
+            todo_id: todo.todo_id
+        }))
     }
 
     const dataObjSerialized = JSON.stringify(dataObj)
-    console.log(dataObjSerialized);
     localStorage.setItem("dataObj", dataObjSerialized)
-    const dataObjDeserialized = JSON.parse(localStorage.getItem("dataObj"))
-    console.log(dataObjDeserialized);
 }
 
-//gets the dataObject from localstorage and updates the global variable dataObj
 function fetchData() {
     const dataObjDeserialized = JSON.parse(localStorage.getItem("dataObj"))
-    setDataObj()
-}*/
+    console.log("Data objektin tila sivun latautuessa: ",dataObjDeserialized);
+    
+    if (dataObjDeserialized.allTodos.todos.length() < 1 && dataObjDeserialized.projects.projects.length() < 1) {
+        //setDataObj()
+        const dataObjSerialized = JSON.stringify(dataObj)
+        localStorage.setItem("dataObj", dataObjSerialized)
+        return
+    }
 
-setTodoList()
+    projects = new Projects()
+    allTodosList = new Todos()
+
+    //nyt täytyy luoda palvelimelta hankitusta dataobjektista
+    //luokkien instanssit ja kutsua oikeita funktioita
+    dataObjDeserialized.allTodos.todos.forEach(todo => {
+        const newTodo = new Todo(todo.title, todo.description, todo.dueDate, todo.priority, todo.project_id, todo.todo_id)
+        allTodosList.add(newTodo)
+    })
+
+    dataObjDeserialized.projects.projects.forEach(project => {
+        const newProject = new Project(project.name, project.project_id)
+        projects.add(newProject)
+    })
+
+    setAllTodosCont(allTodosList)
+    drawProjects(projects, allTodosList)
+    drawAllTodos(allTodosList)
+
+}
+
+function main() {
+    setTodoList()
+}
+
+main()
 
 export {todoDialog, saveChangesBtn, todoSubmitBtn, showTodoInfo, removeTodo, removeProject}
 
