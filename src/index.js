@@ -208,14 +208,15 @@ closeProjectModalBtn.addEventListener("click", () => {
 })
 
 //==================================================================================
-
+let dataObjJSON
 
 //function adds example data to the page
 function setTodoList() {
-    //fetchData()
+    putExampleDataToServer()
+    fetchData()
 
     //chatGPT generated example data
-    const todo1 = new Todo("Buy groceries", "Milk, eggs, bread", "2025-06-30", "high");
+    /*const todo1 = new Todo("Buy groceries", "Milk, eggs, bread", "2025-06-30", "high");
     const todo2 = new Todo("Call mom", "Check in and chat", "2025-07-01", "medium");
     const todo3 = new Todo("Workout", "Leg day at the gym", "2025-06-27", "high");
 
@@ -231,18 +232,83 @@ function setTodoList() {
 
     setAllTodosCont(allTodosList)
     drawProjects(projects, allTodosList)
-    drawAllTodos(allTodosList)
+    drawAllTodos(allTodosList)*/
 
     //LOCALSTORAGE
     //setDataObj()
 }
 
 function setDataObj() {
-    
+    projects = new Projects()
+    allTodosList = new Todos()
+
+    if (dataObjJSON.projects.length > 0) {
+        dataObjJSON.projects.map(project => {
+            const newProject = new Project(project.name, project.project_id)
+            projects.add(newProject)
+        })
+    }
+
+    if (dataObjJSON.allTodos.length > 0) {
+        dataObjJSON.allTodos.map(todo => {
+            const newTodo = new Todo(
+                todo.title, 
+                todo.description, 
+                todo.dueDate,
+                todo.priority,
+                todo.project_id,
+                todo.project_id
+            )
+            allTodosList.add(newTodo)
+        })
+    }
+
+    setAllTodosCont(allTodosList)
+    drawProjects(projects, allTodosList)
+    drawAllTodos(allTodosList)
+}
+
+function putExampleDataToServer() {
+    const object = {
+        "allTodos": [
+            {
+                "title": "testTodo",
+                "description": "testing 123 yeah",
+                "dueDate": "2015-05-05",
+                "priority": "low",
+                "project_id": 1,
+                "todo_id": 1
+            },
+            {
+                "title": "shower",
+                "description": "testing 123 yeah",
+                "dueDate": "2015-05-05",
+                "priority": "low",
+                "project_id": -1,
+                "todo_id": 2
+            }
+        ],
+        "projects": [
+            {
+                "name": "testProject123",
+                "project_id": 1
+            }
+        ]
+    }
+    const dataObjString = JSON.stringify(object)
+    localStorage.setItem("dataObj", dataObjString)
 }
 
 function fetchData() {
+    const fetchedData = localStorage.getItem("dataObj")
 
+    if (!fetchedData) {
+        console.log("No data in localstorage")
+    } else {
+        dataObjJSON = JSON.parse(fetchedData)
+        console.log("Heres the parsed data: ", dataObjJSON);
+        setDataObj()
+    }
 }
 
 function main() {

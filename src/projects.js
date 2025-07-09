@@ -10,7 +10,7 @@ class Projects {
     show() {
         console.log("All projects: ");
         for (const project of this.projects) {
-            project.projectInfo()
+            console.log(project.name, project.project_id);
         }
     }
 }
