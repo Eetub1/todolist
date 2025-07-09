@@ -5,6 +5,7 @@ import { Project } from './project.js'
 import { Projects } from './projects.js';
 import { drawProjects, setAllTodosCont, drawProjectTodos, drawAllTodos, drawTodo} from './handleUI.js';
 
+//setting up the class instances
 let projects = new Projects()
 let allTodosList = new Todos()
 
@@ -17,21 +18,30 @@ const closeProjectModalBtn = document.getElementById("projectFormCloseBtn")
 const projectDialog = document.getElementById("addProjectDialog")
 const addProjectBtn = document.getElementById("addProject")
 addProjectBtn.addEventListener("click", () => projectDialog.showModal())
+
 const submitProjectBtn = document.getElementById("projectSubmitBtn")
 submitProjectBtn.addEventListener("click", (event) => createNewProject(event))
+
 const projectForm = document.forms.addProjectForm
 
 let project
 let projectName
 
+/**
+ * Function creates a new project object by getting the name of the project
+ * from the form. Then the Object is added to the projects object
+ * @param {Event} event
+ */
 function createNewProject(event) {
     event.preventDefault()
+
     const name = projectForm.prName.value
     if (name.trim() === "") return
 
     const newProject = new Project(name)
     projects.add(newProject)
     drawProjects(projects, allTodosList)
+
     projectDialog.close()
     projectForm.reset()
 
@@ -39,18 +49,24 @@ function createNewProject(event) {
     setDataObj()
 }
 
-//finds the current project that is selected
+/**
+ * Function finds the current project that is selected in the UI.
+ * If no project is selected, then return nothing
+ */
 function findCurrentProjectInfo() {
     //saving the clicked projects name so we can add the todo to
     //a specific project
     project = document.getElementById("projectName")
     if (project === null) return
+    //the saved project has an attribute project which contains the projects name
     projectName = project.getAttribute("project")
 }
 
-//adds a todo to the project that is selected
+/**
+ * Function adds a todo to the project that is selected
+ * @param {Object} newTodo todo object
+ */
 function addToCurrentProject(newTodo) {
-    //finding the right project object
     projects.projects.forEach(project => {
         if (project.name === projectName) {
             project.addTodo(newTodo)
@@ -59,26 +75,28 @@ function addToCurrentProject(newTodo) {
     })
 }
 
+/**
+ * Function finds the project object from projects, which has the same name
+ * as the one that is stored in the variable projectName
+ * @returns project object
+ */
 function findProjectObject() {
     return projects.projects.find(project => project.name === projectName)
 }
 
+/**
+ * Removes the project and all the todos that it hast from the projects object
+ * Updates the screen after
+ * @param {Event} event
+ */
 function removeProject(event) {
     event.stopPropagation();
     const id = parseInt(event.target.id.split("-")[1])
 
-    //deleting the project from the list and then updating the projects list
     projects.projects = projects.projects.filter(project => project.project_id !== id)
-
-    //deleting all the todos belonging to the project that was deleted
     allTodosList.todos = allTodosList.todos.filter(todo => todo.project_id !== id)
-
-    //drawing the projects container again
+    
     drawProjects(projects, allTodosList)
-
-    //drawing theAllTodos page for now
-    //maybe in the future make it so that if there is another project remaining, that is rendered instead
-    //of always being allTodos that gets rendered whenever a project is deleted
     drawAllTodos(allTodosList)
 
     //LOCALSTORAGE
@@ -98,6 +116,20 @@ todoSubmitBtn.addEventListener("click", (event) => addTodo(event))
 const todoForm = document.forms.addTodoForm
 const radioButtons = document.querySelectorAll(".todoRadioBtn")
 
+//adding a new todo only to all todos, not into a specific project
+const addToAllTodosBtn = document.getElementById("addToAllTodos")
+addToAllTodosBtn.addEventListener("click", () => {
+    todoDialog.showModal()
+    saveChangesBtn.style.display = "none"
+    todoSubmitBtn.style.display = "block"
+})
+
+/**
+ * Adds a todo to the all todos object by extracting the info from the 
+ * todoForm
+ * @param {Event} event
+ * @returns 
+ */
 function addTodo(event) {
     event.preventDefault()
     const title = todoForm.title.value
@@ -111,31 +143,29 @@ function addTodo(event) {
 
     if (title.trim() === "" || description.trim() === "" || dueDate.trim() === "") return
 
-    //console.log(title, description, dueDate, priority);
-
     const newTodo = new Todo(title, description, dueDate, priority)
     allTodosList.add(newTodo)
 
     todoDialog.close()
     todoForm.reset()
     updateScreen()
+
+    //if a project has been clicked open, then project isnt null
+    //and the todo is added to that project
     if (project !== null) addToCurrentProject(newTodo)
 
     //LOCALSTORAGE
     setDataObj()
 }
 
-//adding a new todo only to all todos, not into a specific project
-const addToAllTodosBtn = document.getElementById("addToAllTodos")
-addToAllTodosBtn.addEventListener("click", () => {
-    todoDialog.showModal()
-    saveChangesBtn.style.display = "none"
-    todoSubmitBtn.style.display = "block"
-})
-
 //==================================================================================
 let clickedTodo
 
+/**
+ * Shows the todos info when clicked. Pulls up the todoForm but with
+ * the todos info and the button changed to saveChanges
+ * @param {Event} event 
+ */
 function showTodoInfo(event) {
     event.preventDefault()
     todoDialog.showModal()
@@ -158,6 +188,11 @@ function showTodoInfo(event) {
     })
 }
 
+/**
+ * When the saveChanges button is pressed, all the information is saved on
+ * the todo object
+ * @param {Event} event 
+ */
 function applyChanges(event) {
     event.preventDefault()
 
@@ -178,6 +213,10 @@ function applyChanges(event) {
     setDataObj()
 }
 
+/**
+ * Either draws all todos to the screen or the current project and its todos
+ * if a project is selected at the moment
+ */
 function updateScreen() {
     findCurrentProjectInfo()
     if (project === null) {
@@ -188,6 +227,10 @@ function updateScreen() {
     }
 }
 
+/**
+ * Removes a todo from the todos object
+ * @param {string} id of the todo that is to be removed
+ */
 function removeTodo(id) {
     let num = parseInt(id)
     allTodosList.remove(num)
@@ -210,35 +253,32 @@ closeProjectModalBtn.addEventListener("click", () => {
 //==================================================================================
 let dataObjJSON
 
-//function adds example data to the page
-function setTodoList() {
-    //putExampleDataToServer()
-    fetchData()
+/**
+ * Whenever a change happens to some object in the todoApp this function
+ * updates that to localstorage
+ */
+function setDataObj() {
+    const data = {
+        projects: projects.projects,
+        allTodos: allTodosList.todos
+    }
 
-    //chatGPT generated example data
-    /*const todo1 = new Todo("Buy groceries", "Milk, eggs, bread", "2025-06-30", "high");
-    const todo2 = new Todo("Call mom", "Check in and chat", "2025-07-01", "medium");
-    const todo3 = new Todo("Workout", "Leg day at the gym", "2025-06-27", "high");
-
-    allTodosList.add(todo1);
-    allTodosList.add(todo2);
-    allTodosList.add(todo3);
-
-    const defaultProject = new Project("Default project")
-    defaultProject.addTodo(todo1)
-    defaultProject.addTodo(todo2)
-    defaultProject.addTodo(todo3)
-    projects.add(defaultProject)
-
-    setAllTodosCont(allTodosList)
-    drawProjects(projects, allTodosList)
-    drawAllTodos(allTodosList)*/
-
-    //LOCALSTORAGE
-    //setDataObj()
+    const dataObjString = JSON.stringify(data)
+    localStorage.setItem("dataObj", dataObjString)
 }
 
-function setDataObj() {
+/**
+ * Fetches data from localstorage and if there is data, then
+ * updates the projects and todos objects based on that
+ */
+function fetchData() {
+    const fetchedData = localStorage.getItem("dataObj")
+
+    if (!fetchedData) {
+        console.log("No data in localstorage")
+    }
+    dataObjJSON = JSON.parse(fetchedData)
+    console.log("Heres the parsed data: ", dataObjJSON);
 
     if (dataObjJSON.projects.length > 0) {
         dataObjJSON.projects.map(project => {
@@ -260,56 +300,11 @@ function setDataObj() {
             allTodosList.add(newTodo)
         })
     }
-
-    const dataObjString = JSON.stringify(dataObjJSON)
-    localStorage.setItem("dataObj", dataObjString)
-}
-
-function putExampleDataToServer() {
-    const object = {
-        "allTodos": [
-            {
-                "title": "testTodo",
-                "description": "testing 12345 yeah",
-                "dueDate": "2015-05-05",
-                "priority": "low",
-                "project_id": 1,
-                "todo_id": 1
-            },
-            {
-                "title": "shower",
-                "description": "testing 123 yeah",
-                "dueDate": "2015-05-05",
-                "priority": "low",
-                "project_id": -1,
-                "todo_id": 2
-            }
-        ],
-        "projects": [
-            {
-                "name": "testProject123",
-                "project_id": 1
-            }
-        ]
-    }
-    const dataObjString = JSON.stringify(object)
-    localStorage.setItem("dataObj", dataObjString)
-}
-
-function fetchData() {
-    const fetchedData = localStorage.getItem("dataObj")
-
-    if (!fetchedData) {
-        console.log("No data in localstorage")
-    } else {
-        dataObjJSON = JSON.parse(fetchedData)
-        console.log("Heres the parsed data: ", dataObjJSON);
-        setDataObj()
-    }
+    setDataObj()
 }
 
 function main() {
-    setTodoList()
+    fetchData()
     drawProjects(projects, allTodosList)
     drawAllTodos(allTodosList)
     setAllTodosCont(allTodosList)

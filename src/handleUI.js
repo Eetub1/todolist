@@ -1,4 +1,3 @@
-
 import {todoDialog, saveChangesBtn, todoSubmitBtn, showTodoInfo, removeTodo, removeProject} from "./index.js"
 
 const todoCont = document.getElementById("todos")
@@ -121,6 +120,11 @@ function drawTodo(todo) {
     todoCont.appendChild(div)
 }
 
+/**
+ * Function finds the id of a todo that is to be removed
+ * and passes it onto the function that deletes the todo
+ * @param {Event} event
+ */
 function findRemovableTodoId(event) {
     const todoId = event.target.id
     removeTodo(todoId)    
