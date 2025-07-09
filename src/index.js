@@ -36,7 +36,7 @@ function createNewProject(event) {
     projectForm.reset()
 
     //LOCALSTORAGE
-    //setDataObj()
+    setDataObj()
 }
 
 //finds the current project that is selected
@@ -82,7 +82,7 @@ function removeProject(event) {
     drawAllTodos(allTodosList)
 
     //LOCALSTORAGE
-    //setDataObj()
+    setDataObj()
 }
 
 //==================================================================================
@@ -122,7 +122,7 @@ function addTodo(event) {
     if (project !== null) addToCurrentProject(newTodo)
 
     //LOCALSTORAGE
-    //setDataObj()
+    setDataObj()
 }
 
 //adding a new todo only to all todos, not into a specific project
@@ -175,7 +175,7 @@ function applyChanges(event) {
     updateScreen()
 
     //LOCALSTORAGE
-    //setDataObj()
+    setDataObj()
 }
 
 function updateScreen() {
@@ -194,7 +194,7 @@ function removeTodo(id) {
     updateScreen()
 
     //LOCALSTORAGE
-    //setDataObj()
+    setDataObj()
 }
 
 closeTodoModalBtn.addEventListener("click", () => {
@@ -212,7 +212,7 @@ let dataObjJSON
 
 //function adds example data to the page
 function setTodoList() {
-    putExampleDataToServer()
+    //putExampleDataToServer()
     fetchData()
 
     //chatGPT generated example data
@@ -239,8 +239,6 @@ function setTodoList() {
 }
 
 function setDataObj() {
-    projects = new Projects()
-    allTodosList = new Todos()
 
     if (dataObjJSON.projects.length > 0) {
         dataObjJSON.projects.map(project => {
@@ -263,9 +261,8 @@ function setDataObj() {
         })
     }
 
-    setAllTodosCont(allTodosList)
-    drawProjects(projects, allTodosList)
-    drawAllTodos(allTodosList)
+    const dataObjString = JSON.stringify(dataObjJSON)
+    localStorage.setItem("dataObj", dataObjString)
 }
 
 function putExampleDataToServer() {
@@ -273,7 +270,7 @@ function putExampleDataToServer() {
         "allTodos": [
             {
                 "title": "testTodo",
-                "description": "testing 123 yeah",
+                "description": "testing 12345 yeah",
                 "dueDate": "2015-05-05",
                 "priority": "low",
                 "project_id": 1,
@@ -313,6 +310,9 @@ function fetchData() {
 
 function main() {
     setTodoList()
+    drawProjects(projects, allTodosList)
+    drawAllTodos(allTodosList)
+    setAllTodosCont(allTodosList)
 }
 
 main()
